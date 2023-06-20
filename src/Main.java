@@ -1,7 +1,4 @@
-import java.sql.SQLOutput;
 import java.util.Scanner;
-import java.util.SplittableRandom;
-import java.util.Vector;
 
 public class Main {
 
@@ -9,65 +6,81 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print(
+                "*****************************\n" +
                 "Velkommen til kalkulatoren.\n" +
                 "Velg et alternativ:\n\n" +
                 "(1) Addisjon.\n" +
                 "(2) Subtraksjon.\n" +
                 "(3) Multiplikasjon.\n" +
-                "(4) Divisjon.\n"
+                "(4) Divisjon.\n" +
+                "(5) Avslutt.\n"
         );
 
         return scanner.nextLine();
     }
 
-    private static void handleMenuChoice(String userInput, Calculator calc) {
-        Scanner scanner = new Scanner(System.in);
+    private static boolean handleMenuChoice(String userInput, Calculator calc) {
+
+        //# FIELDS
         boolean validInput = false;
-        int result;
+        boolean exitProgram = false;
+        int result = 0;
 
         while (!validInput) {
+
+            validInput = true;
+
             switch (userInput) {
-                case "1":
+                case "1" -> {
                     result = calc.add();
-                    System.out.println("Result is: " + result);
-                    validInput = true;
-                break;
 
-                case "2":
+                }
+                case "2" -> {
                     result = calc.subtract();
-                    System.out.println("Result is: " + result);
-                    validInput = true;
 
-                break;
-
-                case "3":
+                }
+                case "3" -> {
                     result = calc.multiply();
-                    System.out.println("Result is: " + result);
-                    validInput = true;
 
-                break;
-
-                case  "4":
+                }
+                case "4" -> {
                     result = calc.divide();
-                    System.out.println("Result is: " + result);
-                    validInput = true;
 
-                break;
-
-                default:
-                    System.out.println("'%s', er ikke et gyldig alternativ.");
-
-                break;
+                }
+                case "5" -> {
+                    System.out.println("Hade bra! :)");
+                    exitProgram = true;
+                }
+                default -> {
+                    System.out.println("'%s', er ikke et gyldig alternativ.".formatted(userInput));
+                    validInput = false;
+                }
             }
         }
+
+        if (!userInput.equals("5")) {
+
+            System.out.println(
+                    "________________________\n" +
+                    "RESULT IS: " + result + "\n" +
+                    "––––––––––––––––––––––––\n"
+            );
+
+        }
+
+        return exitProgram;
 
     }
 
     public static void main(String[] args) {
         Calculator calc = new Calculator();
+        
+        boolean exitProgram = false;
 
-        String userInput = mainMenu();
+        while (!exitProgram) {
+            String userInput = mainMenu();
+            exitProgram = handleMenuChoice(userInput, calc);
 
-        handleMenuChoice(userInput, calc);
+        }
     }
 }
